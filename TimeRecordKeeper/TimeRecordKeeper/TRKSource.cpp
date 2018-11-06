@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string version = "1.0.1";
+string version = "1.0.3";
 
 int shour;
 int lhour;
@@ -21,7 +21,7 @@ int lyear;
 string day;
 string month;
 string year;
-string lAMPM = "AM";
+string lAMPM;
 string curDir();
 
 //Change debugOn to FALSE to remove debug info.
@@ -65,6 +65,7 @@ void getDateTime() {
 	lday = localTime.wDay;
 	lmonth = localTime.wMonth;
 	lyear = localTime.wYear;
+
 	if (localTime.wHour > 12) {
 		lhour = lhour - 12;
 	}
@@ -76,9 +77,13 @@ void getDateTime() {
 	shour = sysTime.wHour;
 	sminute = sysTime.wMinute;
 
-	if (shour > 12) {
-		shour = shour - 12;
+	if (lhour > 12) {
+		lhour = lhour - 12;
 		lAMPM = "PM";
+	}
+	else
+	{
+		lAMPM = "AM";
 	}
 
 
@@ -127,7 +132,7 @@ void debugInfo()
 
 		cout << string(1, '\n');
 		cout << right << setw(x) << "System Up-time: " << shour << ":" << sminute << endl;
-		cout << right << setw(x) << "Local time: " << lhour << ":" << lminute << endl;
+		cout << right << setw(x) << "Local time: " << lhour << ":" << lminute << lAMPM << endl;
 		cout << right << setw(x) << "Month: " << lmonth << endl;
 		cout << right << setw(x) << "Day: " << lday << endl;
 		cout << right << setw(x) << "Year: " << lyear << endl;
