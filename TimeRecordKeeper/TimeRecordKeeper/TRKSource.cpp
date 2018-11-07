@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string version = "1.0.3";
+string version = "1.0.6";
 
 int shour;
 int lhour;
@@ -66,19 +66,11 @@ void getDateTime() {
 	lmonth = localTime.wMonth;
 	lyear = localTime.wYear;
 
-	if (localTime.wHour > 12) {
-		lhour = lhour - 12;
-	}
-	else if (lhour < 1)
-	{
-		lhour++;
-	}
-
 	shour = sysTime.wHour;
 	sminute = sysTime.wMinute;
 
-	if (lhour > 12) {
-		lhour = lhour - 12;
+	if (lhour >= 12)
+	{
 		lAMPM = "PM";
 	}
 	else
@@ -86,7 +78,13 @@ void getDateTime() {
 		lAMPM = "AM";
 	}
 
-
+	if (lhour > 12) {
+		lhour = lhour - 12;
+	}
+	
+	if (lhour == 0) {
+		lhour += 12;
+	}
 }
 
 void outputFile()
@@ -128,11 +126,22 @@ void debugInfo()
 {
 	if (debugOn == true) {
 		int x = 30;
-		
 
 		cout << string(1, '\n');
-		cout << right << setw(x) << "System Up-time: " << shour << ":" << sminute << endl;
-		cout << right << setw(x) << "Local time: " << lhour << ":" << lminute << lAMPM << endl;
+		if (sminute < 10) {
+			cout << right << setw(x) << "System Up-time: " << shour << ":0" << sminute << endl;
+		}
+		else
+		{
+			cout << right << setw(x) << "System Up-time: " << shour << ":" << sminute << endl;
+		}
+
+		if (lminute < 10) {
+			cout << right << setw(x) << "Local time: " << lhour << ":0" << lminute << lAMPM << endl;
+		}
+		else {
+			cout << right << setw(x) << "Local time: " << lhour << ":" << lminute << lAMPM << endl;
+		}
 		cout << right << setw(x) << "Month: " << lmonth << endl;
 		cout << right << setw(x) << "Day: " << lday << endl;
 		cout << right << setw(x) << "Year: " << lyear << endl;
@@ -153,6 +162,6 @@ string curDir() {
 
 void exit()
 {	
-	cout << endl << " Finished operation, closing file..." << endl;
+	cout << " Finished operation, closing file..." << endl;
 	Sleep(2000);
 }
